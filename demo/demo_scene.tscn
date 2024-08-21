@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://djsbncwcp8b5u"]
+
+[ext_resource type="Script" path="res://demo/test_deco.gd" id="1_sp63n"]
+
+[node name="test_2d" type="Node2D"]
+script = ExtResource("1_sp63n")
+
+[node name="test_3d" type="Node3D" parent="."]
+script = ExtResource("1_sp63n")

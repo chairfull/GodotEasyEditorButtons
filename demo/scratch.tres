@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CodeTester" load_steps=2 format=3 uid="uid://yv2cuh51i4jn"]
+
+[ext_resource type="Script" path="res://addons/decorators/CodeScratchPad.gd" id="1_w4ola"]
+
+[resource]
+script = ExtResource("1_w4ola")
+head = "var vibes := [\"dark\", \"light\", \"pink\", \"red\"]
+func world():
+	return vibes.pick_random() + \" \" + [\"forest\", \"cove\", \"desert\"].pick_random()"
+code = "x = [\"mighty\", \"weak\", \"wrong\", \"wise\"].pick_random()
+y = vibes.pick_random()
+z = [\"knight\", \"angel\", \"archer\", \"monster\"].pick_random()
+return \"The %s %s %s entered the %s.\" % [x, y, z, world()]"
+metadata/x = "wise"
+metadata/y = "pink"
+metadata/z = "knight"
