@@ -22,7 +22,9 @@ func myeyes():
 ## Menu Bar
 > [!NOTE]
 > These functions must be static.
-> When plugin is initialized, all scripts are scanned for @editor_menubar
+> 
+> When plugin is initialized, all scripts are scanned for @editor_menubar.
+> 
 > If you want to update the dropdown, disable and reenable the plugin.
 
 ```gd
