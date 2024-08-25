@@ -12,10 +12,14 @@ var object: Object
 var method: String
 var callable: Callable
 var property: String
+var _static: bool
 var _group: String
 var _source_line_deco := -1
 var _source_line_meth := -1
 var _source_line_prop := -1
+
+func is_static() -> bool:
+	return _static
 
 func is_method() -> bool:
 	return method != "" or callable
@@ -59,12 +63,6 @@ func _collect_comments(from: int) -> String:
 		comment.push_front(lines[i].trim_prefix("##").trim_prefix(" "))
 		i -= 1
 	return "\n".join(comment)
-
-#func get_id() -> String:
-	#return get_script().resource_path.get_basename().get_file().trim_suffix("_decorator")
-#
-#func get_group() -> String:
-	#return "%s:%s" % [method, get_id()]
 
 #region 2D Canvas calls.
 
@@ -147,7 +145,7 @@ static func find_methods(object: Object) -> Array[Decorator]:
 	if not Engine.is_editor_hint():
 		return out
 	
-	var gdscript: Script = object.get_script()
+	var gdscript: Script = object if object is Script else object.get_script()
 	if not gdscript:
 		return out
 	
@@ -162,6 +160,7 @@ static func find_methods(object: Object) -> Array[Decorator]:
 			var deco_args := []
 			var method := ""
 			var method_line := -1
+			var is_static := false
 			
 			# Get args.
 			if "(" in line:
@@ -174,18 +173,27 @@ static func find_methods(object: Object) -> Array[Decorator]:
 				if lines[j].begins_with("func "):
 					method = lines[j].trim_prefix("func ").split("(", true, 1)[0]
 					method_line = j
+					is_static = false
+					break
+				elif lines[j].begins_with("static func "):
+					method = lines[j].trim_prefix("static func ").split("(", true, 1)[0]
+					method_line = j
+					is_static = true
 					break
 				j += 1
 			
 			var scr: GDScript = get_class_script(deco_type + "_decorator")
-			if not scr and not deco_type.begins_with("#@export"):
-				push_warning("No decorator @%s." % [deco_type])
-				continue
+			if not scr:
+				scr = Decorator
+			#if not scr and not deco_type.begins_with("#@export"):
+				#push_warning("No decorator @%s." % [deco_type])
+				#continue
 			
 			var dec: Decorator = create(scr, deco_args)
 			dec.object = object
 			dec.method = method
 			dec._group = method
+			dec._static = is_static
 			dec._source_line_deco = deco_line
 			dec._source_line_meth = method_line
 			out.append(dec)

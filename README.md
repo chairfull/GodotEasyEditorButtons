@@ -1,11 +1,9 @@
 # Easy Editor Buttons
-`v1.0`
+`v1.1`
 
-Add buttons to the inspector, or the 2D and 3D viewports in one line.
+Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 
-| | |
-|-|-|
-|![](./README/preview1.png)|![](./README/preview2.png)|
+![](README/decorators.png)
 
 ## 2D Viewport
 ```gd
@@ -13,7 +11,6 @@ Add buttons to the inspector, or the 2D and 3D viewports in one line.
 func dump():
 	print(JSON.print())
 ```
-![](./README/preview2D.png)
 
 ## 3D Viewport
 ```gd
@@ -21,14 +18,32 @@ func dump():
 func myeyes():
 	print("I see it...")
 ```
-![](./README/preview3D.png)
+
+## Menu Bar
+```
+# Must be a static function.
+#@editor_menubar
+static func method():
+	print("Called.")
+
+# Can pass a path.
+#@editor_menubar("Reset/Score")
+static func rscore():
+	score = 0
+
+# Paths beginning with an @ will create a new button.
+#@editor_menubar("@Game/Create Item")
+static func _create_item():
+	var item := Item.new()
+```
 
 ## Current Method Decorators
 |id|Description|Arguments|Allows multiple|
 |--|-----------|---------|---------------|
 |`@button`| Adds button to object inspector.| `method args: Array` `button color: Color` `label override: String`|Yes|
-|`@button2D`| Adds a button to the 2D editor.| `label override: String` | |
-|`@button3D`| Adds a button to the 3D editor.| `label override: String` | |
+|`@button2D`| Adds button to the 2D editor.| `label override: String` | |
+|`@button3D`| Adds button to the 3D editor.| `label override: String` | |
+|`@editor_menubar`|Adds button to dropdown in top menu bar.| | |
 
 ## Features
 - Use multiple `#@button` decorators on the same method to create a row.
@@ -139,3 +154,7 @@ func do_cheat(id: String):
 	if id in cheats:
 		cheats[id].execute_cheat()
 ```
+
+# Changes
+## 1.1
+- Added `@editor_menubar`

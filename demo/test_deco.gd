@@ -6,10 +6,10 @@ extends Node
 func _get_editor_buttons():
 	return [
 		"editor_button",
-		editor_button,
-		editor_button.bind(true),
-		func(): print("Anon Unnamed Button."),
-		func named(): print("Anon Named Button."),
+		#editor_button,
+		#editor_button.bind(true),
+		#func(): print("Anon Unnamed Button."),
+		#func named(): print("Anon Named Button."),
 		{ call="editor_button", text="Wot?", type="2D", tint=Color.RED, tooltip="A tip for your tool." }
 	]
 
