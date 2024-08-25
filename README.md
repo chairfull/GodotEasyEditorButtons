@@ -50,7 +50,7 @@ static func _create_item():
 |`@button`| Adds button to object inspector.| `method args: Array` `button color: Color` `label override: String`|Yes|
 |`@button2D`| Adds button to the 2D editor.| `label override: String` | |
 |`@button3D`| Adds button to the 3D editor.| `label override: String` | |
-|`@editor_menubar`|Adds button to dropdown in top menu bar.| `path: String` `icon_path: String` `rank: int`, `seperator: bool` |Yes|
+|`@editor_menubar`|Adds button to dropdown in top menu bar.| `path: String` `icon_path: String` `rank: int` `seperator: bool` |Yes|
 
 ## Features
 - Use multiple `#@button` decorators on the same method to create a row.
