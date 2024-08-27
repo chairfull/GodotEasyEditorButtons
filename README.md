@@ -1,5 +1,5 @@
 # Easy Editor Buttons
-`v1.2`
+`v1.3`
 
 Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 
@@ -9,21 +9,21 @@ Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 |id |`func`<br>or<br>`var`|Description|Arguments|Allows multiple|
 |:-:|:-------------------:|-----------|---------|---------------|
 |`@button`|`func`| Button in object inspector.| `method args: Array` `button color: Color` `label override: String`|Yes|
-|`@button2D`|`func`|Button in 2D viewport.| `label override: String` | |
-|`@button3D`|`func`|Button in 3D viewport.| `label override: String` | |
+|`@button2d`|`func`|Button in 2D viewport.| `label override: String` | |
+|`@button3d`|`func`|Button in 3D viewport.| `label override: String` | |
 |`@editor_menubar`|`func`|Dropdown menu button in top menu bar.| `path: String` `icon_path: String` `rank: int` `seperator: bool` |Yes|
 |`@dropdown`|`var`|Dropdown with elements from a function.|`func: Callable` `split_on: String`| |
 
 ## 2D Viewport
 ```gd
-#@button2D("💩")
+#@button2d("💩")
 func dump():
 	print(JSON.print())
 ```
 
 ## 3D Viewport
 ```gd
-#@button3D("👀")
+#@button3d("👀")
 func myeyes():
 	print("I see it...")
 ```
@@ -120,9 +120,9 @@ func _get_editor_buttons():
 		# Dictionary
 		{ call="editor_button" }
 		# Dictionary for 2D viewport.
-		{ call="editor_button", type="2D", tint=Color.DEEP_SKY_BLUE }
+		{ call="editor_button", type="2d", tint=Color.DEEP_SKY_BLUE }
 		# Dictionary for 3D viewport.
-		{ call="editor_button", type="3D", tooltip="This button does things." }
+		{ call="editor_button", type="3d", tooltip="This button does things." }
 	]
 ```
 
@@ -135,7 +135,7 @@ func _get_editor_buttons():
 |---|----|------|-------|
 |call|Method name or callable|||
 |text|Optional label||Method name|
-|type|Where to place button. Leave blank for inspector.|`2D` `3D`||
+|type|Where to place button. Leave blank for inspector.|`2d` `3d`||
 |tint|Color to tint button.||Color.WHITE|
 |tooltip|Text to display on hover.|||
 
@@ -209,6 +209,9 @@ func do_cheat(id: String):
 ```
 
 # Changes
+- 1.3
+	- Honoring style guide by using lowercase: `@button2d` `@button3d` instead of `@button2D` `@button3D`.
+	- Fixed `@dropdown("PROPERTIES")` showing non script variables.
 - 1.2
 	- Added `@dropdown`
 	- Changed `menubar` to use `/Name` pattern instead of `@Name` for new top level buttons.

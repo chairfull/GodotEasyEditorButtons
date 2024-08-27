@@ -62,12 +62,12 @@ func set_flag(f: Variant = null):
 	flag = f
 	print("Set flag to %s." % [flag])
 
-#@button2D("💩")
+#@button2d("💩")
 ## A shitty button.
 func ass():
 	print("Shitted")
 
-#@button3D("👀")
+#@button3d("👀")
 ## Do you see this button?
 func myeyes():
 	print("I see it...")

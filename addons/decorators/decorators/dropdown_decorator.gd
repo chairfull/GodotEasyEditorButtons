@@ -1,5 +1,5 @@
 @tool
-extends "../Decorator.gd"
+extends "../decorator.gd"
 
 var items_variant: Variant
 var split_join := "/"
@@ -19,7 +19,8 @@ func get_items() -> Array:
 						items.append(minfo.name)
 				"PROPERTIES":
 					for pinfo in object.get_property_list():
-						items.append(pinfo.name)
+						if pinfo.usage & PROPERTY_USAGE_SCRIPT_VARIABLE != 0:
+							items.append(pinfo.name)
 				"SIGNALS":
 					for sinfo in object.get_signal_list():
 						items.append(sinfo.name)

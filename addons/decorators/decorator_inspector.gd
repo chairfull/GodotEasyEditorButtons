@@ -1,10 +1,10 @@
 @tool
 extends EditorInspectorPlugin
 
-const Decorator := preload("Decorator.gd")
-const button_decorator := preload("res://addons/decorators/decorators/button_decorator.gd")
-const button2D_decorator := preload("res://addons/decorators/decorators/button2D_decorator.gd")
-const button3D_decorator := preload("res://addons/decorators/decorators/button3D_decorator.gd")
+const Decorator := preload("decorator.gd")
+const button_decorator := preload("decorators/button_decorator.gd")
+const button2D_decorator := preload("decorators/button2d_decorator.gd")
+const button3D_decorator := preload("decorators/button3d_decorator.gd")
 
 var target: Object
 var in_inspector: Array[Decorator]
@@ -77,11 +77,11 @@ func _can_handle(object: Object) -> bool:
 					TYPE_DICTIONARY:
 						var dict: Dictionary = item
 						var deco: Decorator
-						match dict.get("type"):
-							"2D":
+						match str(dict.get("type", "")).to_lower():
+							"2d":
 								deco = button2D_decorator.new()
 								in_2D.append(deco)
-							"3D":
+							"3d":
 								deco = button3D_decorator.new()
 								in_3D.append(deco)
 							_:

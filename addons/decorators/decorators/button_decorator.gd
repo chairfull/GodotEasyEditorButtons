@@ -1,5 +1,5 @@
 @tool
-extends "../Decorator.gd"
+extends "../decorator.gd"
 ## Add above method to have them show up in the inspector.
 ## Add multiple to the same method for them to group horizontally.
 ## 
@@ -7,7 +7,7 @@ extends "../Decorator.gd"
 ## func mybutton():
 ## 		pass
 
-const button_decorator := preload("res://addons/decorators/decorators/button_decorator.gd")
+const button_decorator := preload("button_decorator.gd")
 
 var args := []
 var color := Color.WHITE

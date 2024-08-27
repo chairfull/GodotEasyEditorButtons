@@ -7,7 +7,7 @@ extends Resource
 ##	- Optionally can accept arguments: #@myname(true, "id")
 ##	- Optionally write a `class_name myname` so you can do: `Decorator.find_methods(object, myname)`.
 
-const Decorator := preload("Decorator.gd")
+const Decorator := preload("decorator.gd")
 
 var object: Object
 var method: String

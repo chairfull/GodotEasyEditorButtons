@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CodeTester" load_steps=2 format=3 uid="uid://yv2cuh51i4jn"]
 
-[ext_resource type="Script" path="res://addons/decorators/CodeScratchPad.gd" id="1_w4ola"]
+[ext_resource type="Script" path="res://addons/decorators/code_scratch_pad.gd" id="1_w4ola"]
 
 [resource]
 script = ExtResource("1_w4ola")
