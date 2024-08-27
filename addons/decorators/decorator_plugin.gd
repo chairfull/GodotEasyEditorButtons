@@ -70,8 +70,8 @@ func _exit_tree() -> void:
 func _add_menubar_item(item: editor_menubar_decorator):
 	var label: String = item.method.capitalize()
 	var path: String = item.path
-	if path.begins_with("@"):
-		path = path.trim_prefix("@")
+	if path.begins_with("/"):
+		path = path.trim_prefix("/")
 	else:
 		path = "Custom".path_join(label)
 	

@@ -141,14 +141,23 @@ static func _arg_to_var(input: String, object: Object) -> Variant:
 	if input.begins_with("Color."):
 		return Color(input.trim_prefix("Color."))
 	
-	# Detect static classes.
 	var state := { }
+	var autoloads := EditorInterface.get_edited_scene_root().get_tree().root
 	var re := RegEx.create_from_string(r"\b[A-Z][A-Za-z0-9_]*\b(?=\.)")
 	for mr in re.search_all(input):
-		state[mr.strings[0]] = get_static_class(mr.strings[0])
-	# And add Autoloads.
-	for node in EditorInterface.get_edited_scene_root().get_tree().root.get_children():
-		state[node.name] = node
+		var staticname := mr.strings[0]
+		
+		# Check for autoload.
+		var node := autoloads.get_node_or_null(staticname)
+		if node:
+			state[staticname] = node
+			continue
+		
+		# Check for script.
+		var script = get_static_class(mr.strings[0])
+		if script:
+			state[mr.strings[0]] = script
+	
 	# Run expression.
 	var exp := Expression.new()
 	var err := exp.parse(input, state.keys())

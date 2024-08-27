@@ -79,18 +79,27 @@ static func get_file_ids(dir: String) -> Array:
 	return files
 ```
 
-Instead of a function you can pass shortcut strings:
+> [!NOTE]
+> Functions could return a dictionary, which will be treated as a path tree.
+> ```
+> {parent={child={}, child2={grandchild={}}}, parent2={}}
+> ```
+> ```
+> parent
+> parent/child
+> parent/child2
+> parent/child2/grandchild
+> parent2
+>
 
-- `"METHODS"` for object methods.
-- `"PROPERTIES"` for object properties.
-- `"SIGNALS"` for object signals.
-
-> [!CAUTION]
+> [!NOTE]
+> Instead of a function you can pass shortcut strings:
+>
+> - `"METHODS"` for object methods.
+> - `"PROPERTIES"` for object properties.
+> - `"SIGNALS"` for object signals.
+>
 > In future I will create `@dropdown_methods` `@dropdown_properties` and `@dropdown_signals`.
-
-## Features
-- Use multiple `#@button` decorators on the same method to create a row.
-- Comments are shown in tooltip.
 
 # Alternatively `_get_editor_buttons()`
 
@@ -201,6 +210,7 @@ func do_cheat(id: String):
 # Changes
 - 1.2
 	- Added `@dropdown`
-	- Removed `class_name Decorator` so it doesn't clash with any one.
+	- Changed `menubar` to use `/Name` pattern instead of `@Name` for new top level buttons.
+	- Removed global class name `class_name Decorator` so no clashing with anyone.
 - 1.1
 	- Added `@editor_menubar`
