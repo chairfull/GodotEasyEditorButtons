@@ -85,8 +85,8 @@ Instead of a function you can pass shortcut strings:
 - `"PROPERTIES"` for object properties.
 - `"SIGNALS"` for object signals.
 
-> [!TODO]
-> Create seperate `@dropdown_methods` `@dropdown_properties` and `@dropdown_signals`
+> [!CAUTION]
+> In future I will create `@dropdown_methods` `@dropdown_properties` and `@dropdown_signals`.
 
 ## Features
 - Use multiple `#@button` decorators on the same method to create a row.
