@@ -81,16 +81,17 @@ static func get_file_ids(dir: String) -> Array:
 
 > [!NOTE]
 > Functions could return a dictionary, which will be treated as a path tree.
+> This:
 > ```
 > {parent={child={}, child2={grandchild={}}}, parent2={}}
 > ```
+> Becomes:
 > ```
 > parent
 > parent/child
 > parent/child2
 > parent/child2/grandchild
 > parent2
->
 
 > [!NOTE]
 > Instead of a function you can pass shortcut strings:
