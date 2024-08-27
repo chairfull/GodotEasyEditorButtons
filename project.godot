@@ -15,6 +15,10 @@ run/main_scene="res://demo/demo_scene.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+TestDeco="*res://demo/test_deco.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/decorators/plugin.cfg")

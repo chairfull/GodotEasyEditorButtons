@@ -1,6 +1,8 @@
 @tool
 extends EditorPlugin
 
+const Decorator := preload("Decorator.gd")
+
 var plugin: EditorInspectorPlugin
 var inspector2D := HBoxContainer.new()
 var inspector3D := HBoxContainer.new()

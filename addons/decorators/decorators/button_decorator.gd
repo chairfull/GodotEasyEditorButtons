@@ -1,5 +1,5 @@
 @tool
-extends Decorator
+extends "../Decorator.gd"
 ## Add above method to have them show up in the inspector.
 ## Add multiple to the same method for them to group horizontally.
 ## 

@@ -1,9 +1,18 @@
 # Easy Editor Buttons
-`v1.1`
+`v1.2`
 
 Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 
 ![](README/decorators.png)
+
+## Current Decorators
+|id |`func`<br>or<br>`var`|Description|Arguments|Allows multiple|
+|:-:|:-------------------:|-----------|---------|---------------|
+|`@button`|`func`| Button in object inspector.| `method args: Array` `button color: Color` `label override: String`|Yes|
+|`@button2D`|`func`|Button in 2D viewport.| `label override: String` | |
+|`@button3D`|`func`|Button in 3D viewport.| `label override: String` | |
+|`@editor_menubar`|`func`|Dropdown menu button in top menu bar.| `path: String` `icon_path: String` `rank: int` `seperator: bool` |Yes|
+|`@dropdown`|`var`|Dropdown with elements from a function.|`func: Callable` `split_on: String`| |
 
 ## 2D Viewport
 ```gd
@@ -44,13 +53,40 @@ static func _create_item():
 	var item := Item.new()
 ```
 
-## Current Method Decorators
-|id|Description|Arguments|Allows multiple|
-|--|-----------|---------|---------------|
-|`@button`| Adds button to object inspector.| `method args: Array` `button color: Color` `label override: String`|Yes|
-|`@button2D`| Adds button to the 2D editor.| `label override: String` | |
-|`@button3D`| Adds button to the 3D editor.| `label override: String` | |
-|`@editor_menubar`|Adds button to dropdown in top menu bar.| `path: String` `icon_path: String` `rank: int` `seperator: bool` |Yes|
+## Dropdown
+
+Currently only designed for strings.
+
+```gd
+#@dropdown(get_char_names(true))
+@export var char_name: String
+
+#@dropdown(FileScanner.get_file_ids("res://resources/items"))
+@export var item_id: String
+
+func get_char_names(ignore_npc := false) -> Array:
+	var chars := []
+	for node in get_tree().get_nodes_in_group("char"):
+		if not ignore_npc or not node.is_in_group("npc"):
+			chars.append(node.name)
+	return chars
+
+static func get_file_ids(dir: String) -> Array:
+	var files := []
+	for path in FileAccess.get_files(dir):
+		if path.ends_with(".tres"):
+			files.append(path.trim_prefix(dir + "/").trim_suffix(".tres"))
+	return files
+```
+
+Instead of a function you can pass shortcut strings:
+
+- `"METHODS"` for object methods.
+- `"PROPERTIES"` for object properties.
+- `"SIGNALS"` for object signals.
+
+> [!TODO]
+> Create seperate `@dropdown_methods` `@dropdown_properties` and `@dropdown_signals`
 
 ## Features
 - Use multiple `#@button` decorators on the same method to create a row.
@@ -163,5 +199,8 @@ func do_cheat(id: String):
 ```
 
 # Changes
-## 1.1
-- Added `@editor_menubar`
+- 1.2
+	- Added `@dropdown`
+	- Removed `class_name Decorator` so it doesn't clash with any one.
+- 1.1
+	- Added `@editor_menubar`

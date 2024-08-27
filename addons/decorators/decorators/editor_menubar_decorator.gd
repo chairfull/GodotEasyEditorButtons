@@ -1,5 +1,5 @@
 @tool
-extends Decorator
+extends "../Decorator.gd"
 
 var path: String
 var icon: Variant

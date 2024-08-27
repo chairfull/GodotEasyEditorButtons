@@ -1,10 +1,12 @@
 @tool
 extends EditorInspectorPlugin
 
+const Decorator := preload("Decorator.gd")
 const button_decorator := preload("res://addons/decorators/decorators/button_decorator.gd")
 const button2D_decorator := preload("res://addons/decorators/decorators/button2D_decorator.gd")
 const button3D_decorator := preload("res://addons/decorators/decorators/button3D_decorator.gd")
 
+var target: Object
 var in_inspector: Array[Decorator]
 var in_2D: Array[Decorator]
 var in_3D: Array[Decorator]
@@ -103,6 +105,7 @@ func _can_handle(object: Object) -> bool:
 					_:
 						push_error("HMM?", item)
 	
+	target = object
 	return len(in_inspector) > 0
 
 func get_group(deco: Decorator) -> Array[Decorator]:

@@ -3,6 +3,41 @@ extends Node
 
 @export var flag = false
 
+#@dropdown(get_options())
+@export var options: String = ""
+
+#@dropdown(get_options_dict())
+@export var options_dict: String = ""
+
+#@dropdown(FileScanner.get_ids("res://", ".gd"))
+@export var scripts: String = ""
+
+#@dropdown("METHODS")
+@export var method: String = ""
+
+#@dropdown("SIGNALS")
+@export var signals: String = ""
+
+#@dropdown("PROPERTIES")
+@export var property: String = ""
+
+func get_options():
+	return ["a", "b", "c", "d"]
+
+func get_options_dict():
+	return {
+		"item": {
+			"child1": {},
+			"child2": {
+				"innermost_child": {}
+			}
+		},
+		"items2": ""
+	}
+
+@export_custom(PROPERTY_HINT_ENUM_SUGGESTION, "a,b,c,d")
+var options2: String
+
 func _get_editor_buttons():
 	return [
 		"editor_button",

@@ -1,5 +1,4 @@
 extends Resource
-class_name Decorator
 ## Python style wrappers for functions.
 ##	# How to use:
 ##	- Create a script myname_decorator.gd
@@ -7,6 +6,8 @@ class_name Decorator
 ##	- Use `Decorator.find_methods(object, load("res://myname_decorator.gd"))` for a list.
 ##	- Optionally can accept arguments: #@myname(true, "id")
 ##	- Optionally write a `class_name myname` so you can do: `Decorator.find_methods(object, myname)`.
+
+const Decorator := preload("Decorator.gd")
 
 var object: Object
 var method: String
@@ -124,21 +125,48 @@ func _to_string() -> String:
 #region Static.
 
 static func _arg_str_to_args(input: String, object: Object) -> Array:
-	var reg := RegEx.create_from_string(r'\[([^[\]]*+(?:(?R)[^[\]]*+)*+)\]|\{([^{}]*)\}|[^,\[\]\{\}]+')
+	var reg := RegEx.create_from_string(r'\s*(?:([A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*|[A-Za-z_][A-Za-z0-9_]*)(?:\([^)]*\))?|"[^"]*"|\[[^\]]*\]|\{[^}]*\})(?:\s*,\s*|$)')
 	var args := []
 	for item: RegExMatch in reg.search_all(input):
 		var arg := item.strings[0].strip_edges()
 		if arg:
+			#HACK
+			#TODO: Fix.
+			if arg.ends_with(","):
+				arg = arg.trim_suffix(",")
 			args.append(_arg_to_var(arg, object))
 	return args
 
 static func _arg_to_var(input: String, object: Object) -> Variant:
 	if input.begins_with("Color."):
 		return Color(input.trim_prefix("Color."))
+	
+	# Detect static classes.
+	var state := { }
+	var re := RegEx.create_from_string(r"\b[A-Z][A-Za-z0-9_]*\b(?=\.)")
+	for mr in re.search_all(input):
+		state[mr.strings[0]] = get_static_class(mr.strings[0])
+	# And add Autoloads.
+	for node in EditorInterface.get_edited_scene_root().get_tree().root.get_children():
+		state[node.name] = node
+	# Run expression.
+	var exp := Expression.new()
+	var err := exp.parse(input, state.keys())
+	if err == OK:
+		var got = exp.execute(state.values(), object, true, false)
+		if not exp.has_execute_failed():
+			return got
+		else:
+			push_error("EXPR: \"%s\": %s" % [input, exp.get_error_text()])
 	else:
-		var exp := Expression.new()
-		exp.parse(input)
-		return exp.execute([], object)
+		push_error("EXPR: \"%s\": %s" % [input, error_string(err)])
+	return null
+
+static func get_static_class(id: String):
+	for cinfo in ProjectSettings.get_global_class_list():
+		if cinfo.class == id:
+			return load(cinfo.path)
+	return null
 
 static func find_methods(object: Object) -> Array[Decorator]:
 	var out: Array[Decorator] = []
@@ -160,6 +188,8 @@ static func find_methods(object: Object) -> Array[Decorator]:
 			var deco_args := []
 			var method := ""
 			var method_line := -1
+			var property := ""
+			var property_line := -1
 			var is_static := false
 			
 			# Get args.
@@ -180,6 +210,11 @@ static func find_methods(object: Object) -> Array[Decorator]:
 					method_line = j
 					is_static = true
 					break
+				elif lines[j].begins_with("@export var "):
+					property = lines[j].trim_prefix("@export var ").split(":", true, 1)[0]
+					property_line = j
+					is_static = false
+					break
 				j += 1
 			
 			var scr: GDScript = get_class_script(deco_type + "_decorator")
@@ -192,10 +227,12 @@ static func find_methods(object: Object) -> Array[Decorator]:
 			var dec: Decorator = create(scr, deco_args)
 			dec.object = object
 			dec.method = method
-			dec._group = method
+			dec.property = property
+			dec._group = method if method else property
 			dec._static = is_static
 			dec._source_line_deco = deco_line
 			dec._source_line_meth = method_line
+			dec._source_line_prop = property_line
 			out.append(dec)
 	
 	if out and not is_tool:

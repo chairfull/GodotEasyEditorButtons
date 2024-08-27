@@ -5,10 +5,22 @@
 
 [node name="test_2d" type="Node2D"]
 script = ExtResource("1_sp63n")
+options = "b"
+options_dict = "item"
+method = "_edit_set_rotation"
+signals = "renamed"
+property = "CanvasItem"
 
 [node name="test_3d" type="Node3D" parent="."]
 script = ExtResource("1_sp63n")
+options_dict = "item/child2/innermost_child"
+scripts = "addons/decorators/common/RichtTextTooltip"
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(587, 200)
 texture = ExtResource("2_xnu4h")
+
+[node name="OptionButton" type="OptionButton" parent="."]
+offset_right = 94.0
+offset_bottom = 34.0
+item_count = 1

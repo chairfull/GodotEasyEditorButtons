@@ -1,5 +1,5 @@
 @tool
-extends Decorator
+extends "../Decorator.gd"
 
 var label := ""
 var color := Color.WHITE
