@@ -35,7 +35,7 @@ func get_items() -> Array:
 					else:
 						push_error(exp.get_error_text())
 		
-		TYPE_ARRAY:
+		TYPE_ARRAY, TYPE_PACKED_STRING_ARRAY:
 			items = items_variant
 		
 		TYPE_DICTIONARY:

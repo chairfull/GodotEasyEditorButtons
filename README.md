@@ -209,6 +209,8 @@ func do_cheat(id: String):
 ```
 
 # Changes
+- 1.4
+	- Fixed `@dropdown` not working with `PackedStringArray()`.
 - 1.3
 	- Honoring style guide by using lowercase: `@button2d` `@button3d` instead of `@button2D` `@button3D`.
 	- Fixed `@dropdown("PROPERTIES")` showing non script variables.
