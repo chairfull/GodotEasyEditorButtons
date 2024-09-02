@@ -35,6 +35,14 @@ func _enter_tree() -> void:
 	# Custom editor buttons.
 	menu = EditorInterface.get_base_control().find_child("*MenuBar*", true, false)
 	
+	EditorInterface.get_inspector().edited_object_changed.connect(_edited_object_changed)
+	
+	plugin = preload("res://addons/decorators/decorator_inspector.gd").new()
+	add_inspector_plugin(plugin)
+	
+	_populate_editor_menubar.call_deferred()
+
+func _populate_editor_menubar():
 	decorators.clear()
 	
 	# Scan all scripts for #@editor_menubar on a static function.
@@ -48,16 +56,13 @@ func _enter_tree() -> void:
 					item.rank = rank + item.rank * 1000
 					decos.append(item)
 					rank += 1
+	
 	# Sort.
 	decos.sort_custom(func(a, b): return a.rank < b.rank)
+	
 	# Populate.
 	for item in decos:
 		_add_menubar_item(item)
-	
-	EditorInterface.get_inspector().edited_object_changed.connect(_edited_object_changed)
-	
-	plugin = preload("res://addons/decorators/decorator_inspector.gd").new()
-	add_inspector_plugin(plugin)
 
 func _exit_tree() -> void:
 	inspector2D.queue_free()

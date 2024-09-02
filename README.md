@@ -1,5 +1,5 @@
 # Easy Editor Buttons
-`v1.3`
+`v1.4`
 
 Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 
@@ -211,6 +211,8 @@ func do_cheat(id: String):
 # Changes
 - 1.4
 	- Fixed `@dropdown` not working with `PackedStringArray()`.
+	- Fixed `@editor_dropdown` not populating when project loads.
+	- Fixed `Cannot call method 'get_tree'` when project loads.
 - 1.3
 	- Honoring style guide by using lowercase: `@button2d` `@button3d` instead of `@button2D` `@button3D`.
 	- Fixed `@dropdown("PROPERTIES")` showing non script variables.
