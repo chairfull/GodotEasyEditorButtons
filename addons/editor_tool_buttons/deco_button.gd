@@ -1,5 +1,5 @@
 @tool
-extends "../decorator.gd"
+extends "decorator.gd"
 ## Add above method to have them show up in the inspector.
 ## Add multiple to the same method for them to group horizontally.
 ## 
@@ -7,7 +7,8 @@ extends "../decorator.gd"
 ## func mybutton():
 ## 		pass
 
-const button_decorator := preload("button_decorator.gd")
+const DecoButton := preload("deco_button.gd")
+const TooltipOverride := preload("tooltip_override.gd")
 
 var args := []
 var color := Color.WHITE
@@ -43,7 +44,7 @@ func _parse_begin(ed: EditorInspectorPlugin):
 	# Show a group in a single row.
 	else:
 		var hbox := HBoxContainer.new()
-		hbox.set_script(RichTextTooltip)
+		hbox.set_script(TooltipOverride)
 		
 		var tooltip := []
 		tooltip.append("Method: [u][b]%s[/b][/u]" % [method])
@@ -54,17 +55,18 @@ func _parse_begin(ed: EditorInspectorPlugin):
 			tooltip.append(mc)
 		hbox.tooltip_text = "\n".join(tooltip)
 		
-		var lbl := Label.new()
-		lbl.text = method.capitalize()
-		hbox.add_child(lbl)
+		if method:
+			var lbl := Label.new()
+			lbl.text = method.capitalize()
+			hbox.add_child(lbl)
 		hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		for deco: button_decorator in group:
+		for deco: DecoButton in group:
 			var btn := _create_button(deco, false)
 			btn.text = (deco.label if deco.label else " ".join(deco.args) if deco.args else "...")
 			hbox.add_child(btn)
 		ed.add_custom_control(hbox)
 
-func _create_button(deco: button_decorator, show_method_tooltip := true) -> Button:
+func _create_button(deco: DecoButton, show_method_tooltip := true) -> Button:
 	var btn: Button
 	if deco.label.begins_with("res://"):
 		btn = Button.new()
@@ -75,11 +77,14 @@ func _create_button(deco: button_decorator, show_method_tooltip := true) -> Butt
 		btn = Button.new()
 		btn.text = (deco.label if deco.label else deco.method.capitalize())
 	
-	for key in deco.kwargs:
-		if key in btn:
-			btn[key] = deco.kwargs[key]
+	if "font_size" in deco.kwargs:
+		btn.add_theme_font_size_override("font_size", deco.kwargs.font_size)
 	
-	btn.set_script(RichTextTooltip)
+	#for key in deco.kwargs:
+		#if key in btn:
+			#btn[key] = deco.kwargs[key]
+	
+	btn.set_script(TooltipOverride)
 	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn.self_modulate = deco.color
 	btn.pressed.connect(deco.get_method().bindv(deco.args))

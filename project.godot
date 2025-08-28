@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="asset_Decorators"
-run/main_scene="res://demo/demo_scene.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+run/main_scene="uid://djsbncwcp8b5u"
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/decorators/plugin.cfg")
+enabled=PackedStringArray("res://addons/editor_tool_buttons/plugin.cfg")
 
 [rendering]
 

@@ -1,3 +1,4 @@
+@abstract
 extends Resource
 ## Python style wrappers for functions.
 ##	# How to use:
@@ -141,19 +142,21 @@ static func _arg_to_var(input: String, object: Object) -> Variant:
 	if input.begins_with("Color."):
 		return Color(input.trim_prefix("Color."))
 	
-	var state := { }
-	var edited_scene := EditorInterface.get_edited_scene_root()
-	var autoloads := edited_scene.get_tree().root if edited_scene and edited_scene.is_inside_tree() else null
+	var state := {}
+	var scene_root := EditorInterface.get_edited_scene_root()
+	if not scene_root:
+		return
+	
+	var autoloads := scene_root.get_tree().root
 	var re := RegEx.create_from_string(r"\b[A-Z][A-Za-z0-9_]*\b(?=\.)")
 	for mr in re.search_all(input):
 		var staticname := mr.strings[0]
 		
 		# Check for autoload.
-		if autoloads:
-			var node := autoloads.get_node_or_null(staticname)
-			if node:
-				state[staticname] = node
-				continue
+		var node := autoloads.get_node_or_null(staticname)
+		if node:
+			state[staticname] = node
+			continue
 		
 		# Check for script.
 		var script = get_static_class(mr.strings[0])
@@ -254,7 +257,7 @@ static func find_methods(object: Object) -> Array[Decorator]:
 
 # TODO: cache this?
 static func get_class_script(classname: String) -> Script:
-	var file := "res://addons/decorators/decorators/%s.gd" % classname
+	var file := "res://addons/editor_buttons/scripts/%s.gd" % classname
 	if FileAccess.file_exists(file):
 		return load(file)
 	

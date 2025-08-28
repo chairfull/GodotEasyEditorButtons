@@ -1,5 +1,5 @@
 # Easy Editor Buttons
-`v1.4`
+`v1.6`
 
 Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
 
@@ -209,6 +209,15 @@ func do_cheat(id: String):
 ```
 
 # Changes
+- 1.6
+	- Tidied/reorginzed/simplified.
+	- `_get_tooltip_buttons()` can return subarrays to create a row of buttons.
+	- `_get_tooltip_buttons()` can pass a `font_size` override.
+	- Fixed tooltips showing when empty.
+	- Fixed error when enabling plugin with no open scene.
+- 1.5
+	- `@editor_dropdown` displays decorator comments.
+	- Improved `get_comment()` handling.
 - 1.4
 	- Fixed `@dropdown` not working with `PackedStringArray()`.
 	- Fixed `@editor_dropdown` not populating when project loads.

@@ -1,5 +1,9 @@
 @tool
-extends "../decorator.gd"
+extends "decorator.gd"
+##
+## #@dropdown
+## fund myfunc():
+##		return true
 
 var items_variant: Variant
 var split_join := "/"
@@ -35,7 +39,7 @@ func get_items() -> Array:
 					else:
 						push_error(exp.get_error_text())
 		
-		TYPE_ARRAY, TYPE_PACKED_STRING_ARRAY:
+		TYPE_ARRAY:
 			items = items_variant
 		
 		TYPE_DICTIONARY:

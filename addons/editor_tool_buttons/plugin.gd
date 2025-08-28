@@ -2,6 +2,8 @@
 extends EditorPlugin
 
 const Decorator := preload("decorator.gd")
+const DecoEditorMenubar := preload("deco_editor_menubar.gd")
+const EasyButtonInspector := preload("plugin_inspector.gd")
 
 var plugin: EditorInspectorPlugin
 var inspector2D := HBoxContainer.new()
@@ -9,8 +11,6 @@ var inspector3D := HBoxContainer.new()
 var menu: Node
 var popups: Array[PopupMenu]
 var decorators: Array[Decorator]
-
-const editor_menubar_decorator = preload("decorators/editor_menubar_decorator.gd")
 
 func _id_pressed(id: int):
 	decorators[id].get_method().call()
@@ -35,14 +35,6 @@ func _enter_tree() -> void:
 	# Custom editor buttons.
 	menu = EditorInterface.get_base_control().find_child("*MenuBar*", true, false)
 	
-	EditorInterface.get_inspector().edited_object_changed.connect(_edited_object_changed)
-	
-	plugin = preload("res://addons/decorators/decorator_inspector.gd").new()
-	add_inspector_plugin(plugin)
-	
-	_populate_editor_menubar.call_deferred()
-
-func _populate_editor_menubar():
 	decorators.clear()
 	
 	# Scan all scripts for #@editor_menubar on a static function.
@@ -52,17 +44,20 @@ func _populate_editor_menubar():
 			var script := load(file)
 			var rank := 0
 			for item in Decorator.find_methods(script):
-				if item is editor_menubar_decorator:
+				if item is DecoEditorMenubar:
 					item.rank = rank + item.rank * 1000
 					decos.append(item)
 					rank += 1
-	
 	# Sort.
 	decos.sort_custom(func(a, b): return a.rank < b.rank)
-	
 	# Populate.
 	for item in decos:
 		_add_menubar_item(item)
+	
+	EditorInterface.get_inspector().edited_object_changed.connect(_edited_object_changed)
+	
+	plugin = EasyButtonInspector.new()
+	add_inspector_plugin(plugin)
 
 func _exit_tree() -> void:
 	inspector2D.queue_free()
@@ -72,7 +67,7 @@ func _exit_tree() -> void:
 	
 	remove_inspector_plugin(plugin)
 
-func _add_menubar_item(item: editor_menubar_decorator):
+func _add_menubar_item(item: DecoEditorMenubar):
 	var label: String = item.method.capitalize()
 	var path: String = item.path
 	if path.begins_with("/"):
