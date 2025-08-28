@@ -1,7 +1,7 @@
 # Easy Editor Buttons
 `v1.6`
 
-Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line.
+Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line. Or use the powerful [`_get_editor_buttons()`](#geteditorbuttons).
 
 ![](README/decorators.png)
 
@@ -102,7 +102,7 @@ static func get_file_ids(dir: String) -> Array:
 >
 > In future I will create `@dropdown_methods` `@dropdown_properties` and `@dropdown_signals`.
 
-# Alternatively `_get_editor_buttons()`
+# _get_editor_buttons()
 
 ```gd
 func _get_editor_buttons():
