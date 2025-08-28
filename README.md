@@ -1,7 +1,7 @@
 # Easy Editor Buttons
 `v1.6`
 
-Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line. Or use the powerful [`_get_editor_buttons()`](#geteditorbuttons).
+Add buttons to the menu bar, inspector, or the 2D and 3D viewports in one line. Or use the powerful [`_get_editor_buttons()`](#_get_editor_buttons).
 
 ![](README/decorators.png)
 
